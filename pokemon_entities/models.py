@@ -1,4 +1,5 @@
 from django.db import models  # noqa F401
+import django.utils.timezone as timezone
 
 
 class Pokemon(models.Model):
@@ -21,6 +22,15 @@ class PokemonEntity(models.Model):
     strength = models.IntegerField(default=0)
     defence = models.IntegerField(default=0)
     stamina = models.IntegerField(default=0)
+
+    def is_available(self):
+        appeared_at_local = timezone.localtime(self.appeared_at)
+        disappeared_at_local = timezone.localtime(self.disappeared_at)
+
+        if appeared_at_local > timezone.now() or disappeared_at_local < timezone.now():
+            return False
+
+        return True
 
     def __str__(self):
         return f'{self.pokemon.title} {self.level} lvl.'
