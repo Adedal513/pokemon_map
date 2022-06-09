@@ -91,6 +91,13 @@ def show_pokemon(request, pokemon_id):
     except exceptions.ObjectDoesNotExist:
         return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
 
+    next_evolutions = Pokemon.objects.filter(evolves_from_id=requested_pokemon.id)
+
+    if not next_evolutions:
+        next_evolutions = [None]
+
+    previous_evolution = requested_pokemon.evolves_from
+
     requested_pokemon_image_uri = None
 
     if requested_pokemon.image:
@@ -103,8 +110,8 @@ def show_pokemon(request, pokemon_id):
         "title_jp": requested_pokemon.title_jp,
         "description": requested_pokemon.description,
         "img_url": requested_pokemon_image_uri,
-        "next_evolution": get_evolution_serialized(requested_pokemon.evolves_to, request),
-        "previous_evolution": get_evolution_serialized(requested_pokemon.evolves_from, request)
+        "next_evolution": get_evolution_serialized(next_evolutions[0], request),
+        "previous_evolution": get_evolution_serialized(previous_evolution, request)
     }
 
     pokemon_entities = PokemonEntity.objects.filter(pokemon_id=int(pokemon_id))
