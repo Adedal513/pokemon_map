@@ -92,7 +92,7 @@ def show_pokemon(request, pokemon_id):
         id=int(pokemon_id)
     )
 
-    next_evolutions = Pokemon.objects.filter(evolves_from_id=requested_pokemon.id)
+    next_evolutions = requested_pokemon.evolves_to.all()
     previous_evolution = requested_pokemon.evolves_from
 
     if not next_evolutions:

@@ -10,7 +10,7 @@ class Pokemon(models.Model):
     description = models.TextField(default='Об этом покемоне нам пока ничего не известно :(', blank=True)
     evolves_from = models.ForeignKey(to='self',
                                      on_delete=models.RESTRICT,
-                                     related_name='previous_evolutions',
+                                     related_name='evolves_to',
                                      null=True,
                                      blank=True)
 
