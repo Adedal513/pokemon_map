@@ -14,11 +14,11 @@ class Pokemon(models.Model):
                                      null=True,
                                      blank=True)
 
-    def __str__(self):
-        return self.title
-
     class Meta:
         verbose_name = 'pokemon'
+
+    def __str__(self):
+        return self.title
 
 
 class PokemonEntity(models.Model):
@@ -34,6 +34,12 @@ class PokemonEntity(models.Model):
     defence = models.IntegerField(blank=True, null=True)
     stamina = models.IntegerField(blank=True, null=True)
 
+    class Meta:
+        verbose_name = 'pokemon entity'
+
+    def __str__(self):
+        return f'{self.pokemon.title} {self.level} lvl.'
+
     def is_available(self):
         appeared_at_local = timezone.localtime(self.appeared_at)
         disappeared_at_local = timezone.localtime(self.disappeared_at)
@@ -42,9 +48,3 @@ class PokemonEntity(models.Model):
             return False
 
         return True
-
-    def __str__(self):
-        return f'{self.pokemon.title} {self.level} lvl.'
-
-    class Meta:
-        verbose_name = 'pokemon entity'
