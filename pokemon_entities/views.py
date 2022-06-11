@@ -4,6 +4,7 @@ import json
 from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from django.core import exceptions
+from django.shortcuts import get_object_or_404
 
 from .models import Pokemon, PokemonEntity
 
@@ -86,17 +87,16 @@ def show_all_pokemons(request):
 
 
 def show_pokemon(request, pokemon_id):
-    try:
-        requested_pokemon = Pokemon.objects.get(id=int(pokemon_id))
-    except exceptions.ObjectDoesNotExist:
-        return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
+    requested_pokemon = get_object_or_404(
+        klass=Pokemon,
+        id=int(pokemon_id)
+    )
 
     next_evolutions = Pokemon.objects.filter(evolves_from_id=requested_pokemon.id)
+    previous_evolution = requested_pokemon.evolves_from
 
     if not next_evolutions:
         next_evolutions = [None]
-
-    previous_evolution = requested_pokemon.evolves_from
 
     requested_pokemon_image_uri = None
 
