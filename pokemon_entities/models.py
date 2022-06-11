@@ -40,11 +40,10 @@ class PokemonEntity(models.Model):
     def __str__(self):
         return f'{self.pokemon.title} {self.level} lvl.'
 
-    def is_available(self):
+    def is_available(self) -> bool:
         appeared_at_local = timezone.localtime(self.appeared_at)
         disappeared_at_local = timezone.localtime(self.disappeared_at)
 
-        if appeared_at_local > timezone.now() or disappeared_at_local < timezone.now():
-            return False
+        availability = appeared_at_local > timezone.now() or disappeared_at_local < timezone.now()
 
-        return True
+        return availability
