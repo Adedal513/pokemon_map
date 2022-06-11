@@ -12,8 +12,7 @@ class Pokemon(models.Model):
                                      on_delete=models.RESTRICT,
                                      related_name='previous_evolutions',
                                      null=True,
-                                     blank=True,
-                                     default=None)
+                                     blank=True)
 
     def __str__(self):
         return self.title
@@ -30,10 +29,10 @@ class PokemonEntity(models.Model):
     disappeared_at = models.DateTimeField(default=None)
 
     level = models.IntegerField(default=0)
-    health = models.IntegerField(default=0, blank=True, null=True)
-    strength = models.IntegerField(default=0, blank=True, null=True)
-    defence = models.IntegerField(default=0, blank=True, null=True)
-    stamina = models.IntegerField(default=0, blank=True, null=True)
+    health = models.IntegerField(blank=True, null=True)
+    strength = models.IntegerField(blank=True, null=True)
+    defence = models.IntegerField(blank=True, null=True)
+    stamina = models.IntegerField(blank=True, null=True)
 
     def is_available(self):
         appeared_at_local = timezone.localtime(self.appeared_at)
